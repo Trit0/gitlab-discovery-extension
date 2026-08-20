@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>New Tab</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0; width: 100vw; height: 100vh;
+      background: radial-gradient(circle at center, #161b22 0%, #0d1117 100%);
+      color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+    }
+    
+    /* Modern Central Visual */
+    .center-visual {
+      width: 300px; height: 300px; position: absolute;
+      top: 50%; left: 30%; transform: translate(-50%, -50%);
+    }
+    .center-visual svg {
+      width: 100%; height: 100%; filter: drop-shadow(0 0 20px rgba(88, 166, 255, 0.15));
+      animation: floatSlow 10s ease-in-out infinite;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-15px) scale(1.02); }
+    }
+
+    /* Info Box Styling */
+    #main-ui { display: none; }
+    .info-box {
+      position: absolute; right: 10%; bottom: 15%;
+      width: 450px; text-align: right; z-index: 10;
+      background: rgba(22, 27, 34, 0.7);
+      padding: 30px; border-radius: 12px;
+      border: 1px solid rgba(48, 54, 61, 0.5);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
+    #project-avatar {
+      width: 64px; height: 64px; object-fit: cover;
+      border: 1px solid #30363d; border-radius: 8px;
+      margin-bottom: 15px; background: #0d1117;
+    }
+
+    .project-title {
+      font-size: 1.8rem; font-weight: 600;
+      color: #f0f6fc; margin: 0;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .topics-container {
+      display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 12px;
+    }
+    .topic-badge {
+      background: rgba(56, 139, 253, 0.1); border: 1px solid rgba(56, 139, 253, 0.4);
+      padding: 4px 10px; font-size: 0.75rem; border-radius: 20px;
+      color: #58a6ff; font-weight: 500;
+    }
+
+    .divider {
+      height: 1px; background: #30363d; margin: 20px 0;
+    }
+    
+    .project-desc {
+      font-size: 1rem; line-height: 1.5; color: #8b949e; margin-bottom: 25px;
+      text-align: right; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    
+    /* Updated SVG Stats Styling */
+    .stats { 
+      display: flex; gap: 20px; justify-content: flex-end;
+      font-size: 0.95rem; color: #8b949e; margin-bottom: 25px; font-weight: 500;
+    }
+    .stat-item {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .stat-item svg {
+      fill: currentColor;
+    }
+    
+    .btn-container { display: flex; justify-content: flex-end; gap: 12px; }
+    .btn {
+      background: #21262d; border: 1px solid #30363d; color: #c9d1d9;
+      font-size: 0.9rem; font-weight: 500; padding: 10px 18px; border-radius: 6px;
+      cursor: pointer; transition: all 0.2s ease;
+    }
+    .btn:hover { background: #30363d; border-color: #8b949e; }
+    .btn-primary { background: #238636; border-color: rgba(240,246,252,0.1); color: white; }
+    .btn-primary:hover { background: #2ea043; }
+
+    /* Setup Prompt */
+    #setup-msg { display: none; font-size: 1.2rem; text-align: center; color: #8b949e; z-index: 20; }
+    #setup-msg a { color: #58a6ff; text-decoration: none; cursor: pointer; font-weight: 500; }
+    #setup-msg a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- Setup Warning -->
+  <div id="setup-msg">
+    Configuration Required <br><br>
+    <a id="open-options">Set your Personal Access Token to view projects</a>
+  </div>
+
+  <!-- Main Interface -->
+  <div id="main-ui">
+    <div class="center-visual">
+      <!-- Abstract modern tech network SVG -->
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="60" fill="none" stroke="#30363d" stroke-width="1" stroke-dasharray="4 4" />
+        <circle cx="100" cy="100" r="40" fill="none" stroke="#58a6ff" stroke-width="2" opacity="0.5" />
+        <path d="M 100 40 L 160 100 L 100 160 L 40 100 Z" fill="none" stroke="#c9d1d9" stroke-width="1" opacity="0.3"/>
+        <circle cx="100" cy="40" r="4" fill="#58a6ff" />
+        <circle cx="160" cy="100" r="4" fill="#58a6ff" />
+        <circle cx="100" cy="160" r="4" fill="#58a6ff" />
+        <circle cx="40" cy="100" r="4" fill="#58a6ff" />
+        <circle cx="100" cy="100" r="8" fill="#c9d1d9" />
+      </svg>
+    </div>
+    
+    <div class="info-box">
+      <img id="project-avatar" src="" alt="Avatar" style="display: none;">
+      
+      <h1 class="project-title" id="project-title">Loading project...</h1>
+      
+      <div class="topics-container" id="project-topics"></div>
+
+      <div class="divider"></div>
+      <div class="project-desc" id="project-desc">Fetching repository data...</div>
+      
+      <!-- Updated Stats Div with SVGs -->
+      <div class="stats" id="project-stats">
+        <div class="stat-item">
+          <!-- Star SVG -->
+          <svg viewBox="0 0 16 16" width="16" height="16">
+            <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"></path>
+          </svg>
+          <span id="stat-stars">--</span>
+        </div>
+        <div class="stat-item">
+          <!-- Fork SVG -->
+          <svg viewBox="0 0 16 16" width="16" height="16">
+            <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 4 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"></path>
+          </svg>
+          <span id="stat-forks">--</span>
+        </div>
+      </div>
+      
+      <div class="btn-container">
+        <button class="btn" id="star-btn">Star Repository</button>
+        <button class="btn btn-primary" id="open-btn">Open Repository</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="newtab.js"></script>
+</body>
+</html>

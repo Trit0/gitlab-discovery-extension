@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GitLab Discovery Configuration</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 30px; background: #0d1117; color: #c9d1d9; }
+    .container { max-width: 400px; margin: 0 auto; background: #161b22; padding: 25px; border-radius: 8px; border: 1px solid #30363d; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    h2 { margin-top: 0; color: #f0f6fc; }
+    label { display: block; margin-top: 15px; font-weight: 500; font-size: 14px; }
+    input { width: 95%; padding: 10px; margin-top: 8px; background: #0d1117; color: #c9d1d9; border: 1px solid #30363d; border-radius: 6px; }
+    input:focus { outline: none; border-color: #58a6ff; }
+    button { margin-top: 25px; width: 100%; padding: 12px; background: #238636; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: 600; }
+    button:hover { background: #2ea043; }
+    #status { margin-top: 15px; color: #3fb950; font-weight: 500; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Configuration</h2>
+    <label>GitLab Instance URL:
+      <input type="text" id="url" placeholder="https://gitlab.com" value="https://gitlab.com">
+    </label>
+    <label>Personal Access Token:
+      <input type="password" id="pat" placeholder="glpat-...">
+    </label>
+    <button id="save">Save Credentials</button>
+    <p id="status"></p>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>
